@@ -20,10 +20,14 @@ public class AddressBookSystem {
 	 * @param addressBookName
 	 */
 	public void addAddressBookList(String addressBookName) {
-		if (addressBookNameMap.get(addressBookName).size() != 0)
-			System.out.println("Already exist");
-		else {
+		if (addressBookNameMap.isEmpty())
+		{
 			List<ContactPerson> newContactPersonList = new ArrayList<ContactPerson>();
+		     addressBookNameMap.put(addressBookName, newContactPersonList);
+		}
+		else {
+			List<ContactPerson> newContactPersonList = addressBookNameMap.get(addressBookName);
+			if(!(newContactPersonList==null))
 			addressBookNameMap.put(addressBookName, newContactPersonList);
 		}
 	}
@@ -35,9 +39,6 @@ public class AddressBookSystem {
 	 */
 	public static void addContactPerson(String addressBookName) {
 		List<ContactPerson> contactPersonList = addressBookNameMap.get(addressBookName);
-		if (contactPersonList.size() == 0)
-			System.out.println("Address Book of given name is not exist");
-		else {
 			Scanner consoleInput = new Scanner(System.in);
 			System.out.println("Enter the First Name ");
 			String firstName = consoleInput.next();
@@ -57,6 +58,14 @@ public class AddressBookSystem {
 			String email = consoleInput.next();
 			ContactPerson contactPerson = new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber,
 					email);
+			if(contactPersonList==null) {
+				contactPersonList.add(contactPerson);
+				cityMap.put(city, contactPerson);
+				stateMap.put(state, contactPerson);
+			    new AddressBookFileIOService().writeContactPerson(contactPerson);	
+			}
+			else
+			{
 			Predicate<ContactPerson> isDuplicate = (ContactPerson) -> {
 				for (ContactPerson contactPersonInList : contactPersonList) {
 					if (contactPersonInList.getFirstName().equals(contactPerson.getFirstName())
@@ -66,14 +75,15 @@ public class AddressBookSystem {
 				return false;
 			};
 			if (contactPersonList.stream().anyMatch(isDuplicate)) {
-			} else {
+			}
+			else {
 				contactPersonList.add(contactPerson);
 				cityMap.put(city, contactPerson);
 				stateMap.put(state, contactPerson);
+			    new AddressBookFileIOService().writeContactPerson(contactPerson);	
 			}
 		}
 	}
-
 	/**
 	 * uc8
 	 * 
@@ -216,15 +226,14 @@ public class AddressBookSystem {
 		System.out.println("Welcome to Address Book Program");
 		AddressBookSystem addressBookSystem = new AddressBookSystem();
 		Scanner consoleInputObject = new Scanner(System.in);
-		System.out.println("1.Add Address Book to the system");
-		System.out.println("2.Exit");
 		while (true) {
 			System.out.println("1.Add Address Book");
 			System.out.println("2.Exit");
 			int choice = consoleInputObject.nextInt();
 			if (choice == 1) {
 				System.out.println("Enter the Name of the Address Book ");
-				addressBookSystem.addAddressBookList(consoleInputObject.nextLine());
+				String addressBookName=consoleInputObject.next();
+				addressBookSystem.addAddressBookList(addressBookName);
 			} else
 				break;
 		}
