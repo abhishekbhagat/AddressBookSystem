@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbook;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,5 +22,14 @@ public class AddressBookFileIOService {
 			e1.printStackTrace();
 		}
 	}
-	
+
+	public void readDataFromFile() {
+		ContactPerson contactPerson = new ContactPerson();
+		try {
+			Files.lines(new File(ADDRESS_BOOK_FILE_NAME).toPath()).map(line -> line.trim())
+					.forEach(line -> System.out.println(line));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
 }
