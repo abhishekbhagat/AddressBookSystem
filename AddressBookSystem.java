@@ -156,7 +156,52 @@ public class AddressBookSystem {
 			}
 		}
 	}
-
+	/**
+	 * uc12
+	 * 
+	 */
+	public static void sortByCity() {
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
+			List<ContactPerson> contactPersonList = entry.getValue();
+			List<ContactPerson> contactPersonListSortedByCity = contactPersonList.stream()
+					.sorted((ContactPerson c1, ContactPerson c2) -> c1.getCity().compareTo(c2.getCity()))
+					.collect(Collectors.toList());
+			for (ContactPerson contactPerson : contactPersonListSortedByCity) {
+				System.out.println(contactPerson);
+			}
+		}
+	}
+	/**
+	 * uc12
+	 * 
+	 */
+	public static void sortByZip() {
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
+			List<ContactPerson> contactPersonList = entry.getValue();
+			List<ContactPerson> contactPersonListSortedByZip = contactPersonList.stream()
+					.sorted((ContactPerson c1, ContactPerson c2) -> c1.getZip().compareTo(c2.getZip()))
+					.collect(Collectors.toList());
+			for (ContactPerson contactPerson : contactPersonListSortedByZip) {
+				System.out.println(contactPerson);
+			}
+		}
+	}
+	
+	/**
+	 * uc12
+	 * 
+	 */
+	public static void sortByState() {
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
+			List<ContactPerson> contactPersonList = entry.getValue();
+			List<ContactPerson> contactPersonListSortedByState = contactPersonList.stream()
+					.sorted((ContactPerson c1, ContactPerson c2) -> c1.getState().compareTo(c2.getState()))
+					.collect(Collectors.toList());
+			for (ContactPerson contactPerson : contactPersonListSortedByState) {
+				System.out.println(contactPerson);
+			}
+		}
+	}
 	public static void deleteContactPerson(String firstName, String lastName) {
 		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
 			List<ContactPerson> contactPersonList = entry.getValue();
