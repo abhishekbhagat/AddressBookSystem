@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.function.Predicate;
-
+import java.util.Map.Entry;
 public class AddressBookSystem {
 	private static Map<String, List<ContactPerson>> addressBookNameMap = new TreeMap<>();
+	private static Map<String, ContactPerson> cityMap = new TreeMap<>();
+	private static Map<String, ContactPerson> stateMap = new TreeMap<>();
 
 	/**
 	 * uc6
@@ -64,6 +66,8 @@ public class AddressBookSystem {
 			if (contactPersonList.stream().anyMatch(isDuplicate)) {
 			} else {
 				contactPersonList.add(contactPerson);
+				cityMap.put(city, contactPerson);
+				stateMap.put(state, contactPerson);
 			}
 		}
 	}
@@ -75,18 +79,39 @@ public class AddressBookSystem {
 	 * @param choice
 	 * @param cityOrState
 	 */
-	public void searchPersonAcrossCity(String city) {
+	public static  void searchPersonAcrossCity(String city) {
 		Predicate<ContactPerson> searchCity = contactPerson -> contactPerson.getCity().equals(city);
 		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchCity)
 				.forEach(contactPerson -> System.out.println(contactPerson)));
 	}
 
-	public void searchPersonAcrossState(String state) {
+	/**
+	 * uc8
+	 * @param state
+	 */
+	public static void searchPersonAcrossState(String state) {
 		Predicate<ContactPerson> searchState = contactPerson -> contactPerson.getState().equals(state);
 		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchState)
 				.forEach(contactPerson -> System.out.println(contactPerson)));
 	}
-
+	/**
+	 * uc9
+	 * @param city
+	 */
+	public static void viewPersonsByCity(String city) {
+		for (Map.Entry<String, ContactPerson> entrycontactPerson : cityMap.entrySet()) {
+		    ContactPerson contactPerson = entrycontactPerson .getValue();
+		    if(contactPerson.getCity().equals(city))
+              System.out.println(contactPerson);
+		}
+	}
+	public static void viewPersonsByState(String state) {
+		for (Map.Entry<String, ContactPerson> entrycontactPerson : stateMap.entrySet()) {
+		    ContactPerson contactPerson = entrycontactPerson .getValue();
+		    if(contactPerson.getState().equals(state))
+              System.out.println(contactPerson);
+		}
+	}
 	public static void deleteContactPerson(String firstName, String lastName) {
 		for (Map.Entry<String, List<ContactPerson>> addressBook : addressBookNameMap.entrySet()) {
 			List<ContactPerson> contactPersonList = addressBook.getValue();
@@ -110,5 +135,7 @@ public class AddressBookSystem {
 		String contactFirstName = consoleInputObject.next();
 		String contactLastName = consoleInputObject.next();
 		deleteContactPerson(contactFirstName, contactLastName);
+		searchPersonAcrossCity("dhanbad");
+		viewPersonsByState("jharkhand");
 	}
 }
