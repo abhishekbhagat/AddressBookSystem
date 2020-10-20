@@ -12,6 +12,7 @@ public class AddressBookSystem {
 
 	/**
 	 * uc6
+	 * 
 	 * @param addressBookName
 	 */
 	public void addAddressBookList(String addressBookName) {
@@ -25,6 +26,7 @@ public class AddressBookSystem {
 
 	/**
 	 * uc7
+	 * 
 	 * @param addressBookName
 	 */
 	public static void addContactPerson(String addressBookName) {
@@ -64,6 +66,25 @@ public class AddressBookSystem {
 				contactPersonList.add(contactPerson);
 			}
 		}
+	}
+
+	/**
+	 * uc8
+	 * 
+	 * @param fname
+	 * @param choice
+	 * @param cityOrState
+	 */
+	public void searchPersonAcrossCity(String city) {
+		Predicate<ContactPerson> searchCity = contactPerson -> contactPerson.getCity().equals(city);
+		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchCity)
+				.forEach(contactPerson -> System.out.println(contactPerson)));
+	}
+
+	public void searchPersonAcrossState(String state) {
+		Predicate<ContactPerson> searchState = contactPerson -> contactPerson.getState().equals(state);
+		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchState)
+				.forEach(contactPerson -> System.out.println(contactPerson)));
 	}
 
 	public static void deleteContactPerson(String firstName, String lastName) {
