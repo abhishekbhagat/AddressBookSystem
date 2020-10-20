@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.Map.Entry;
+
 public class AddressBookSystem {
 	private static Map<String, List<ContactPerson>> addressBookNameMap = new TreeMap<>();
 	private static Map<String, ContactPerson> cityMap = new TreeMap<>();
@@ -79,7 +81,7 @@ public class AddressBookSystem {
 	 * @param choice
 	 * @param cityOrState
 	 */
-	public static  void searchPersonAcrossCity(String city) {
+	public static void searchPersonAcrossCity(String city) {
 		Predicate<ContactPerson> searchCity = contactPerson -> contactPerson.getCity().equals(city);
 		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchCity)
 				.forEach(contactPerson -> System.out.println(contactPerson)));
@@ -87,6 +89,7 @@ public class AddressBookSystem {
 
 	/**
 	 * uc8
+	 * 
 	 * @param state
 	 */
 	public static void searchPersonAcrossState(String state) {
@@ -94,47 +97,66 @@ public class AddressBookSystem {
 		addressBookNameMap.values().forEach(contactPersonList -> contactPersonList.stream().filter(searchState)
 				.forEach(contactPerson -> System.out.println(contactPerson)));
 	}
+
 	/**
 	 * uc9
+	 * 
 	 * @param city
 	 */
 	public static void viewPersonsByCity(String city) {
 		for (Map.Entry<String, ContactPerson> entrycontactPerson : cityMap.entrySet()) {
-		    ContactPerson contactPerson = entrycontactPerson .getValue();
-		    if(contactPerson.getCity().equals(city))
-              System.out.println(contactPerson);
+			ContactPerson contactPerson = entrycontactPerson.getValue();
+			if (contactPerson.getCity().equals(city))
+				System.out.println(contactPerson);
 		}
 	}
+
 	public static void viewPersonsByState(String state) {
 		for (Map.Entry<String, ContactPerson> entry : stateMap.entrySet()) {
-		    ContactPerson contactPerson = entry .getValue();
-		    if(contactPerson.getState().equals(state))
-              System.out.println(contactPerson);
+			ContactPerson contactPerson = entry.getValue();
+			if (contactPerson.getState().equals(state))
+				System.out.println(contactPerson);
 		}
 	}
+
 	/**
 	 * uc10
 	 * 
 	 * @param state
 	 */
 	public static void getNumber_OfContactPersonsByState(String state) {
-		
-		for (Map.Entry<String, List<ContactPerson>> entry: addressBookNameMap.entrySet())
-		{
+
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
 			List<ContactPerson> contactPersonList = entry.getValue();
 			System.out.println((int) contactPersonList.stream()
 					.filter(ContactPerson -> ContactPerson.getState().equals(state)).count());
-	     }
+		}
 	}
-   public static void getNumber_OfContactPersonsByCity(String city) {
-		
-		for (Map.Entry<String, List<ContactPerson>> entry: addressBookNameMap.entrySet())
-		{
+
+	public static void getNumber_OfContactPersonsByCity(String city) {
+
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
 			List<ContactPerson> contactPersonList = entry.getValue();
 			System.out.println((int) contactPersonList.stream()
 					.filter(ContactPerson -> ContactPerson.getState().equals(city)).count());
-	     }
+		}
 	}
+
+	/**
+	 * uc11
+	 */
+	public static void sortByName() {
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
+			List<ContactPerson> contactPersonList = entry.getValue();
+			List<ContactPerson> contactPersonListSortedByName = contactPersonList.stream()
+					.sorted((ContactPerson c1, ContactPerson c2) -> c1.getFirstName().compareTo(c2.getFirstName()))
+					.collect(Collectors.toList());
+			for (ContactPerson contactPerson : contactPersonListSortedByName) {
+				System.out.println(contactPerson);
+			}
+		}
+	}
+
 	public static void deleteContactPerson(String firstName, String lastName) {
 		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
 			List<ContactPerson> contactPersonList = entry.getValue();
@@ -154,24 +176,23 @@ public class AddressBookSystem {
 		while (true) {
 			System.out.println("1.Add Address Book");
 			System.out.println("2.Exit");
-			int choice =consoleInputObject.nextInt();
+			int choice = consoleInputObject.nextInt();
 			if (choice == 1) {
 				System.out.println("Enter the Name of the Address Book ");
 				addressBookSystem.addAddressBookList(consoleInputObject.nextLine());
-			} 
-			else 
+			} else
 				break;
 		}
-	    while(true) {
-	    	System.out.println("1.Add New Contact Person");
+		while (true) {
+			System.out.println("1.Add New Contact Person");
 			System.out.println("Exit");
-			int choice =consoleInputObject.nextInt();
+			int choice = consoleInputObject.nextInt();
 			if (choice == 1) {
 				System.out.println("Enter the Name of the Address Book ");
-				addContactPerson(consoleInputObject.next());			} 
-			else 
+				addContactPerson(consoleInputObject.next());
+			} else
 				break;
-	    }
+		}
 		System.out.println("Enter the name of the Address Book in which you want to add new contact ");
 		addContactPerson(consoleInputObject.next());
 		System.out.println("Enter the First Name and Last Name of the contact which you want to delet");
@@ -181,5 +202,6 @@ public class AddressBookSystem {
 		searchPersonAcrossCity("dhanbad");
 		viewPersonsByState("jharkhand");
 		getNumber_OfContactPersonsByCity("dhanbad");
+		sortByName();
 	}
 }
