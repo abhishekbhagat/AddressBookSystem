@@ -86,6 +86,17 @@ public class ContactPerson {
 		this.email = email;
 	}
 
+	public boolean equals(Object obj) {
+		ContactPerson contactPerson = new ContactPerson();
+		contactPerson = (ContactPerson) obj;
+		if (this == obj)
+			return true;
+		if (obj.getClass() != this.getClass())
+			return false;
+		return (contactPerson.getFirstName().equals(this.getFirstName())
+				&& contactPerson.getLastName().equals(this.getLastName()));
+	}
+
 	public ContactPerson() {
 	}
 
