@@ -106,15 +106,38 @@ public class AddressBookSystem {
 		}
 	}
 	public static void viewPersonsByState(String state) {
-		for (Map.Entry<String, ContactPerson> entrycontactPerson : stateMap.entrySet()) {
-		    ContactPerson contactPerson = entrycontactPerson .getValue();
+		for (Map.Entry<String, ContactPerson> entry : stateMap.entrySet()) {
+		    ContactPerson contactPerson = entry .getValue();
 		    if(contactPerson.getState().equals(state))
               System.out.println(contactPerson);
 		}
 	}
+	/**
+	 * uc10
+	 * 
+	 * @param state
+	 */
+	public static void getNumber_OfContactPersonsByState(String state) {
+		
+		for (Map.Entry<String, List<ContactPerson>> entry: addressBookNameMap.entrySet())
+		{
+			List<ContactPerson> contactPersonList = entry.getValue();
+			System.out.println((int) contactPersonList.stream()
+					.filter(ContactPerson -> ContactPerson.getState().equals(state)).count());
+	     }
+	}
+   public static void getNumber_OfContactPersonsByCity(String city) {
+		
+		for (Map.Entry<String, List<ContactPerson>> entry: addressBookNameMap.entrySet())
+		{
+			List<ContactPerson> contactPersonList = entry.getValue();
+			System.out.println((int) contactPersonList.stream()
+					.filter(ContactPerson -> ContactPerson.getState().equals(city)).count());
+	     }
+	}
 	public static void deleteContactPerson(String firstName, String lastName) {
-		for (Map.Entry<String, List<ContactPerson>> addressBook : addressBookNameMap.entrySet()) {
-			List<ContactPerson> contactPersonList = addressBook.getValue();
+		for (Map.Entry<String, List<ContactPerson>> entry : addressBookNameMap.entrySet()) {
+			List<ContactPerson> contactPersonList = entry.getValue();
 			for (ContactPerson contactPerson : contactPersonList) {
 				if (contactPerson.getFirstName().equals(firstName) && contactPerson.getLastName().equals(lastName))
 					contactPersonList.remove(contactPerson);
@@ -126,9 +149,29 @@ public class AddressBookSystem {
 		System.out.println("Welcome to Address Book Program");
 		AddressBookSystem addressBookSystem = new AddressBookSystem();
 		Scanner consoleInputObject = new Scanner(System.in);
-		System.out.println("Enter the Name of the Address Book ");
-		String addressBookName = consoleInputObject.next();
-		addressBookSystem.addAddressBookList(addressBookName);
+		System.out.println("1.Add Address Book to the system");
+		System.out.println("2.Exit");
+		while (true) {
+			System.out.println("1.Add Address Book");
+			System.out.println("2.Exit");
+			int choice =consoleInputObject.nextInt();
+			if (choice == 1) {
+				System.out.println("Enter the Name of the Address Book ");
+				addressBookSystem.addAddressBookList(consoleInputObject.nextLine());
+			} 
+			else 
+				break;
+		}
+	    while(true) {
+	    	System.out.println("1.Add New Contact Person");
+			System.out.println("Exit");
+			int choice =consoleInputObject.nextInt();
+			if (choice == 1) {
+				System.out.println("Enter the Name of the Address Book ");
+				addContactPerson(consoleInputObject.next());			} 
+			else 
+				break;
+	    }
 		System.out.println("Enter the name of the Address Book in which you want to add new contact ");
 		addContactPerson(consoleInputObject.next());
 		System.out.println("Enter the First Name and Last Name of the contact which you want to delet");
@@ -137,5 +180,6 @@ public class AddressBookSystem {
 		deleteContactPerson(contactFirstName, contactLastName);
 		searchPersonAcrossCity("dhanbad");
 		viewPersonsByState("jharkhand");
+		getNumber_OfContactPersonsByCity("dhanbad");
 	}
 }
