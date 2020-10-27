@@ -8,9 +8,6 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.bridgelabz.address.AddressBookCSV;
-import com.bridgelabz.address.ContactPerson;
-
 import java.util.Map.Entry;
 
 public class AddressBookSystem {
@@ -18,6 +15,7 @@ public class AddressBookSystem {
 	private static Map<String, ContactPerson> cityMap = new TreeMap<>();
 	private static Map<String, ContactPerson> stateMap = new TreeMap<>();
 	public static final String CSV_FILE_PATH = "F:\\ContactPersonCSV";
+	public static final String JSON_FILE_PATH="F:\\ContactPersonJSON";
 
 	/**
 	 * uc6
@@ -49,6 +47,7 @@ public class AddressBookSystem {
 			if (contactPersonList.size() == 0) {
 				contactPersonList.add(contactPerson);
 				new AddressBookCSV().writeCsvFile(contactPerson, CSV_FILE_PATH);
+				new AddressBookJSON().writeContactPerson(contactPerson);
 				cityMap.put(contactPerson.getCity(), contactPerson);
 				stateMap.put(contactPerson.getState(), contactPerson);
 			} else {
@@ -64,6 +63,7 @@ public class AddressBookSystem {
 				} else {
 					contactPersonList.add(contactPerson);
 					new AddressBookCSV().writeCsvFile(contactPerson, CSV_FILE_PATH);
+					new AddressBookJSON().writeContactPerson(contactPerson);
 					cityMap.put(contactPerson.getCity(), contactPerson);
 					stateMap.put(contactPerson.getCity(), contactPerson);
 
